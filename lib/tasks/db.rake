@@ -9,10 +9,9 @@ task read_file: :environment do
 
     artists_yaml = YAML.load(File.read('artists.yml'))
     artists_list = artists_yaml["artists"]
-    p artists_list
-    puts "__________________________________________________"
+    # p artists_list
 
-    RSpotify.authenticate('638c956a52c74ac1b63c6881245f862b', 'b36c485e3a604e288ebc4577f1a49278')
+    RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
 
     artists_list.each do |artist|
         artists = RSpotify::Artist.search(artist.to_s)
@@ -28,6 +27,11 @@ task read_file: :environment do
                 spotify_id: artist_found.id
             })
             artist_created.save!
+            
+            # genres table
+            artist_created.genres.each do |genre|
+                new_genre = Genre.
+
         end
     end
 end
