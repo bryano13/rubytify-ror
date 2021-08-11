@@ -9,7 +9,6 @@ task read_file: :environment do
 
     artists_yaml = YAML.load(File.read('artists.yml'))
     artists_list = artists_yaml["artists"]
-    # p artists_list
 
     RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
 
