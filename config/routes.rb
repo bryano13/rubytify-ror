@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   get 'api/v1/artists', to: 'artists#index'
   get 'api/v1/artists/:id/albums', to: 'albums#artist_albums'
   get '/api/v1/albums/:id/songs', to: 'songs#album_songs'
+  get '/api/v1/genres/:genre_name/random_song', to: 'songs#random_song'
 end
