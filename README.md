@@ -29,4 +29,4 @@ This API has the following endpoints:
 - Run `rake db:read_file` fetches the Spotify API and populates the Database with artists read from a YAML file. 
 
 
-`Made by Bryan Ortiz Lenis
+Coded with ❤️ and 🔨 by: [Bryan Ortiz Lenis](https://github.com/bryano13)
