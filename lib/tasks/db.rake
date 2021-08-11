@@ -38,6 +38,22 @@ task read_file: :environment do
                     artist_id: artist_created.id
                 })
                 album_created.save!
+
+                if album_created
+                    album_songs = album.tracks
+                    album_songs.each do |song|
+                        song_created = Song.create({
+                            name: song.name,
+                            duration_ms: song.duration_ms,
+                            explicit: song.explicit ? song.explicit : false,
+                            preview_url: song.preview_url,
+                            spotify_url: song.external_urls['spotify'],
+                            spotify_id: song.id,
+                            album_id: album_created.id
+                })
+                song_created.save!
+                    end
+                end
             end
         end
     end
