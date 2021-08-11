@@ -14,7 +14,7 @@ ActiveRecord::Schema.define(version: 2021_08_10_035916) do
 
   create_table "albums", force: :cascade do |t|
     t.string "name"
-    t.text "image"
+    t.json "image"
     t.text "spotify_url"
     t.integer "total_tracks"
     t.string "spotify_id"

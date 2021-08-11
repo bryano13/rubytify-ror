@@ -27,11 +27,18 @@ task read_file: :environment do
                 spotify_id: artist_found.id
             })
             artist_created.save!
-            
-            # genres table
-            artist_created.genres.each do |genre|
-                new_genre = Genre.
 
+            artist_found.albums.each do |album|
+                album_created = Album.create({
+                    name: album.name,
+                    image: album.images[0],
+                    total_tracks: album.total_tracks,
+                    spotify_url: album.external_urls['spotify'],
+                    spotify_id: album.id,
+                    artist_id: artist_created.id
+                })
+                album_created.save!
+            end
         end
     end
 end
