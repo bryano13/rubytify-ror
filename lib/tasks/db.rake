@@ -5,7 +5,7 @@ require 'rspotify'
 desc 'Loads seed artists data => fetchs from Spotify API => populates databases'
 task read_file: :environment do
     # Helps reset the data on all databases (to avoid duplicates)
-    Rake::Task['db:reset'].invoke
+    # Rake::Task['db:reset'].invoke
 
     artists_yaml = YAML.load(File.read('artists.yml'))
     artists_list = artists_yaml["artists"]
