@@ -129,6 +129,7 @@ GEM
     omniauth-oauth2 (1.7.1)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    pg (1.2.3)
     public_suffix (3.1.1)
     puma (3.12.6)
     racc (1.5.2)
@@ -206,6 +207,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   byebug
   listen (>= 3.0.5, < 3.2)
+  pg
   puma (~> 3.11)
   rails (~> 5.2.3)
   rspotify
