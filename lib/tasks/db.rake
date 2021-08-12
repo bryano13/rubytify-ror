@@ -9,10 +9,12 @@ task read_file: :environment do
 
     artists_yaml = YAML.load(File.read('artists.yml'))
     artists_list = artists_yaml["artists"]
+    # p artists_list
 
     RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
 
     artists_list.each do |artist|
+        sleep(0.3)
         artists = RSpotify::Artist.search(artist.to_s)
         artist_found = artists.first
         #puts artist_found.name
@@ -28,6 +30,7 @@ task read_file: :environment do
             artist_created.save!
 
             artist_found.albums.each do |album|
+                sleep(0.3)
                 album_created = Album.create({
                     name: album.name,
                     image: album.images[0],
@@ -41,6 +44,7 @@ task read_file: :environment do
                 if album_created
                     album_songs = album.tracks
                     album_songs.each do |song|
+                        sleep(0.3)
                         song_created = Song.create({
                             name: song.name,
                             duration_ms: song.duration_ms,
