@@ -8,8 +8,9 @@
 
 ## Rubytiy API
 
-You can request the API hosted in Heroku here:  
- 
+You can request the API hosted in Heroku here:
+[API Link](https://bryan-ortiz-rubytify-ayenda.herokuapp.com/api/v1/genres/rock/random_song)
+
 
 This API has the following endpoints:
 
