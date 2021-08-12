@@ -21,13 +21,13 @@ This API has the following endpoints:
 
 ### Database
 
-- SQLite  
+- Postgress 
 
 ### Rake Task 
 
 **warning** Running this task will drop all the databases
 
-- Run `rake db:read_file` fetches the Spotify API and populates the Database with artists read from a YAML file. 
+- Run `rake read_file` fetches the Spotify API and populates the Database with artists read from a YAML file. 
 
 
 Coded with ❤️ and 🔨 by: [Bryan Ortiz Lenis](https://github.com/bryano13)
