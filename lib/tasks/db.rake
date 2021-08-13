@@ -15,6 +15,7 @@ namespace :db do
 
         # populate db with artists from spotify API
         artists_yaml['artists'].each do |artist|
+            sleep(0.3)
             artists = RSpotify::Artist.search(artist.to_s)
             # puts artists.to_json
             artist_fetched = artists.first
@@ -40,6 +41,7 @@ namespace :db do
         # populate Album table
         for a_id, album_list in albums_dict
             for album in album_list
+                sleep(0.3)
                 # puts "#{a_id}: #{album.name}"
                 new_album = Album.create({
                     name: album.name,
@@ -58,6 +60,7 @@ namespace :db do
         # populate Song table
         for albm_id, song_list in songs_dict
             for song in song_list
+                sleep(0.3)
                 #puts "#{k}: #{song.name}"
                 new_song = Song.create({
                     name: song.name,
