@@ -10,7 +10,9 @@ namespace :db do
         RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
         artists_yaml = YAML.load(File.read('artists.yml'))
 
-        albums_dict = {} # hash that will contain {'artist_id' => '[albums array]'}
+        albums_dict = {} # hash that will contain {'artist_id' => [albums array]}
+        songs_dict = {} # hash that will contain {'album_id' => [songs array]}
+
         # populate db with artists from spotify API
         artists_yaml['artists'].each do |artist|
             artists = RSpotify::Artist.search(artist.to_s)
@@ -38,7 +40,7 @@ namespace :db do
         # populate Album table
         for a_id, album_list in albums_dict
             for album in album_list
-                puts "#{a_id}: #{album.name}"
+                # puts "#{a_id}: #{album.name}"
                 new_album = Album.create({
                     name: album.name,
                     image: album.images[0],
@@ -48,6 +50,24 @@ namespace :db do
                     artist_id: a_id
                 })
                 new_album.save!
+                songs_dict[new_album.id] = album.tracks
+                # puts "#{new_album.id}: #{album.tracks}"
+            end
+        end
+
+        # populate Song table
+        for albm_id, song_list in songs_dict
+            for song in song_list
+                #puts "#{k}: #{song.name}"
+                new_song = Song.create({
+                    name: song.name,
+                    duration_ms: song.duration_ms,
+                    explicit: song.explicit,
+                    preview_url: song.preview_url,
+                    spotify_id: song.id,
+                    album_id: albm_id
+                })
+                new_song.save!
             end
         end
 
