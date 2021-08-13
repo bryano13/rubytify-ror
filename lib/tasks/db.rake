@@ -1,63 +1,56 @@
 require 'yaml'
 require 'rspotify'
 
+namespace :db do
+    desc "Empty the db and populates with data from Spotify API"
+    task populate: :environment do
+        # drop all databases
+        # Rake::Task['db:reset'].invoke
 
-desc 'Loads seed artists data => fetchs from Spotify API => populates databases'
-task read_file: :environment do
-    # Helps reset the data on all databases (to avoid duplicates)
-    # Rake::Task['db:reset'].invoke
+        RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
+        artists_yaml = YAML.load(File.read('artists.yml'))
 
-    artists_yaml = YAML.load(File.read('artists.yml'))
-    artists_list = artists_yaml["artists"]
-    # p artists_list
+        albums_dict = {} # hash that will contain {'artist_id' => '[albums array]'}
+        # populate db with artists from spotify API
+        artists_yaml['artists'].each do |artist|
+            artists = RSpotify::Artist.search(artist.to_s)
+            # puts artists.to_json
+            artist_fetched = artists.first
+            #puts artist_fetched.albums.to_json
+            # puts artist_fetched.methods
+            # puts artist_fetched.albums.first.tracks.first.name
+            if artist_fetched
+                new_artist = Artist.create({
+                    name: artist_fetched.name,
+                    image: artist_fetched.images[0]['url'],
+                    genres: artist_fetched.genres,
+                    popularity: artist_fetched.popularity,
+                    spotify_url: artist_fetched.external_urls['spotify'],
+                    spotify_id: artist_fetched.id
+                })
+                new_artist.save!
 
-    RSpotify.authenticate(ENV['SPOTIFY_CLIENT_ID'], ENV['SPOTIFY_SECRET_ID'])
-
-    artists_list.each do |artist|
-        sleep(0.3)
-        artists = RSpotify::Artist.search(artist.to_s)
-        artist_found = artists.first
-        #puts artist_found.name
-        if artist_found
-            artist_created = Artist.create({
-                name: artist_found.name,
-                image: artist_found.images[0]['url'],
-                genres: artist_found.genres,
-                popularity: artist_found.popularity,
-                spotify_url: artist_found.external_urls["spotify"],
-                spotify_id: artist_found.id
-            })
-            artist_created.save!
-
-            artist_found.albums.each do |album|
-                sleep(0.3)
-                album_created = Album.create({
+                # albums_per_artist is an array of album objects per artist
+                albums_per_artist = artist_fetched.albums
+                albums_dict[new_artist.id] = albums_per_artist   
+            end
+        end
+        # populate Album table
+        for a_id, album_list in albums_dict
+            for album in album_list
+                puts "#{a_id}: #{album.name}"
+                new_album = Album.create({
                     name: album.name,
                     image: album.images[0],
                     total_tracks: album.total_tracks,
                     spotify_url: album.external_urls['spotify'],
                     spotify_id: album.id,
-                    artist_id: artist_created.id
+                    artist_id: a_id
                 })
-                album_created.save!
-
-                if album_created
-                    album_songs = album.tracks
-                    album_songs.each do |song|
-                        sleep(0.3)
-                        song_created = Song.create({
-                            name: song.name,
-                            duration_ms: song.duration_ms,
-                            explicit: song.explicit ? song.explicit : false,
-                            preview_url: song.preview_url,
-                            spotify_url: song.external_urls['spotify'],
-                            spotify_id: song.id,
-                            album_id: album_created.id
-                })
-                song_created.save!
-                    end
-                end
+                new_album.save!
             end
         end
+
     end
+
 end
