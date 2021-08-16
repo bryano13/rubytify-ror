@@ -25,8 +25,6 @@ This API has the following endpoints:
 
 ### Rake Task 
 
-**warning** Running this task will drop all the databases
-
 - Run `rake db:populate` fetches the Spotify API and populates the Database with artists read from a YAML file. 
 
 
