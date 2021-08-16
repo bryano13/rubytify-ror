@@ -27,7 +27,7 @@ This API has the following endpoints:
 
 **warning** Running this task will drop all the databases
 
-- Run `rake read_file` fetches the Spotify API and populates the Database with artists read from a YAML file. 
+- Run `rake populate` fetches the Spotify API and populates the Database with artists read from a YAML file. 
 
 
 Coded with ❤️ and 🔨 by: [Bryan Ortiz Lenis](https://github.com/bryano13)
