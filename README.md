@@ -21,7 +21,7 @@ This API has the following endpoints:
 
 ### Database
 
-- Postgress 
+- PostgreSQL
 
 ### Rake Task 
 
