@@ -19,9 +19,7 @@ namespace :db do
             artists = RSpotify::Artist.search(artist.to_s)
             # puts artists.to_json
             artist_fetched = artists.first
-            #puts artist_fetched.albums.to_json
-            # puts artist_fetched.methods
-            # puts artist_fetched.albums.first.tracks.first.name
+
             if artist_fetched
                 new_artist = Artist.create({
                     name: artist_fetched.name,
